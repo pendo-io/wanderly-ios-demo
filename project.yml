@@ -1,0 +1,70 @@
+name: Wanderly
+options:
+  bundleIdPrefix: com.demo
+  deploymentTarget:
+    iOS: "17.0"
+  createIntermediateGroups: true
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+    DEVELOPMENT_TEAM: ""
+    CODE_SIGN_STYLE: Automatic
+targets:
+  Wanderly:
+    type: application
+    platform: iOS
+    sources:
+      - path: Wanderly
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.demo.wanderly
+        MARKETING_VERSION: "1.0"
+        CURRENT_PROJECT_VERSION: "1"
+        TARGETED_DEVICE_FAMILY: "1,2"
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+    info:
+      path: Wanderly/Resources/Info.plist
+      properties:
+        CFBundleDisplayName: Wanderly
+        UILaunchScreen:
+          UIColorName: AccentColor
+        UISupportedInterfaceOrientations:
+          - UIInterfaceOrientationPortrait
+        UISupportedInterfaceOrientations~ipad:
+          - UIInterfaceOrientationPortrait
+          - UIInterfaceOrientationPortraitUpsideDown
+          - UIInterfaceOrientationLandscapeLeft
+          - UIInterfaceOrientationLandscapeRight
+        UIApplicationSceneManifest:
+          UIApplicationSupportsMultipleScenes: false
+          UISceneConfigurations:
+            UIWindowSceneSessionRoleApplication:
+              - UISceneConfigurationName: Default Configuration
+                UISceneDelegateClassName: $(PRODUCT_MODULE_NAME).SceneDelegate
+  WanderlyTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - path: WanderlyTests
+    dependencies:
+      - target: Wanderly
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.demo.wanderly.tests
+        GENERATE_INFOPLIST_FILE: YES
+        TEST_HOST: $(BUILT_PRODUCTS_DIR)/Wanderly.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Wanderly
+        BUNDLE_LOADER: $(TEST_HOST)
+schemes:
+  Wanderly:
+    build:
+      targets:
+        Wanderly: all
+        WanderlyTests: [test]
+    run:
+      config: Debug
+    test:
+      config: Debug
+      gatherCoverageData: true
+      targets:
+        - WanderlyTests
