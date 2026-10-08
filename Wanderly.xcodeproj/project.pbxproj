@@ -29,6 +29,7 @@
 		C25A3CE6AF11F629FC71A04D /* DiscoverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B1B99A520854480B144798 /* DiscoverViewController.swift */; };
 		CD5030A6547CDCE24B040387 /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01DF0590B93A6D1CEFA58B8B /* MainTabBarController.swift */; };
 		D21C625AE5F996D32A10DA25 /* DestinationFilterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47E25270189AA48EC034C854 /* DestinationFilterTests.swift */; };
+		A1B2C3D4E5F60718293A4B5C /* Pendo in Frameworks */ = {isa = PBXBuildFile; productRef = A1B2C3D4E5F60718293A4B5F /* Pendo */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -68,6 +69,17 @@
 		E964D79B3A9FA2ABEA5265CB /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		F1269744AF65497D36A9AF71 /* PrimaryButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrimaryButton.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		A1B2C3D4E5F60718293A4B5D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A1B2C3D4E5F60718293A4B5C /* Pendo in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
 		28117A7B622428ED58F18AB9 = {
@@ -231,6 +243,7 @@
 			buildConfigurationList = 3ADEC6F85D8EC51D5FBF311E /* Build configuration list for PBXNativeTarget "Wanderly" */;
 			buildPhases = (
 				5F6C575670A099365C547BEA /* Sources */,
+				A1B2C3D4E5F60718293A4B5D /* Frameworks */,
 				68C237C0965124415B58F445 /* Resources */,
 			);
 			buildRules = (
@@ -239,6 +252,7 @@
 			);
 			name = Wanderly;
 			packageProductDependencies = (
+				A1B2C3D4E5F60718293A4B5F /* Pendo */,
 			);
 			productName = Wanderly;
 			productReference = 03620D4EA81151AB71F38192 /* Wanderly.app */;
@@ -272,6 +286,9 @@
 			);
 			mainGroup = 28117A7B622428ED58F18AB9;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				A1B2C3D4E5F60718293A4B5E /* XCRemoteSwiftPackageReference "pendo-mobile-ios" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = D4876E130669B270D00D1540 /* Products */;
 			projectDirPath = "";
@@ -354,6 +371,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
+				PENDO_APP_KEY = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.demo.wanderly;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -513,6 +531,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
+				PENDO_APP_KEY = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.demo.wanderly;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -567,6 +586,25 @@
 			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		A1B2C3D4E5F60718293A4B5E /* XCRemoteSwiftPackageReference "pendo-mobile-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/pendo-io/pendo-mobile-ios";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.9.2;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		A1B2C3D4E5F60718293A4B5F /* Pendo */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A1B2C3D4E5F60718293A4B5E /* XCRemoteSwiftPackageReference "pendo-mobile-ios" */;
+			productName = Pendo;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = E03D93A0B433FED35DCE12F1 /* Project object */;
 }
