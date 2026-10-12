@@ -20,6 +20,21 @@
 	<string>1.0</string>
 	<key>CFBundleVersion</key>
 	<string>1</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>pendo-pairing</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>$(PENDO_URL_SCHEME)</string>
+			</array>
+		</dict>
+	</array>
+	<key>PendoAppKey</key>
+	<string>$(PENDO_APP_KEY)</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
