@@ -13,6 +13,10 @@
 		27C8D09DF5E4545A8D1CEB7F /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B86E02A9E9E53FFA93033CC /* SceneDelegate.swift */; };
 		30A868BD1329A00090AA2D57 /* Destination.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6A9BB979E77591544552284 /* Destination.swift */; };
 		42837A20067DF1FCF2090454 /* CardPopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D156F23B00EF46DFF6839FD /* CardPopupViewController.swift */; };
+		42A25651307CC1390008380E /* Pendo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42A25650307CC1390008380E /* Pendo.framework */; };
+		42A25652307CC1390008380E /* Pendo.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 42A25650307CC1390008380E /* Pendo.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		42A25656307CC1460008380E /* Pendo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42A25655307CC1460008380E /* Pendo.framework */; };
+		42A25657307CC1460008380E /* Pendo.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 42A25655307CC1460008380E /* Pendo.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		4CB6B7E290FFEAD5DD9F352C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7EDD8F2C94E1F3869FF6D9E /* AppDelegate.swift */; };
 		5748315649D8FBF4C28721A5 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E964D79B3A9FA2ABEA5265CB /* ProfileViewController.swift */; };
 		66F92C2CA0CE791724D1D71F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E13C1C53E31D45A01D6519F5 /* Assets.xcassets */; };
@@ -29,7 +33,6 @@
 		C25A3CE6AF11F629FC71A04D /* DiscoverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B1B99A520854480B144798 /* DiscoverViewController.swift */; };
 		CD5030A6547CDCE24B040387 /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01DF0590B93A6D1CEFA58B8B /* MainTabBarController.swift */; };
 		D21C625AE5F996D32A10DA25 /* DestinationFilterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47E25270189AA48EC034C854 /* DestinationFilterTests.swift */; };
-		A1B2C3D4E5F60718293A4B5C /* Pendo in Frameworks */ = {isa = PBXBuildFile; productRef = A1B2C3D4E5F60718293A4B5F /* Pendo */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -42,9 +45,24 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		42A25654307CC1390008380E /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				42A25652307CC1390008380E /* Pendo.framework in Embed Frameworks */,
+				42A25657307CC1460008380E /* Pendo.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		01DF0590B93A6D1CEFA58B8B /* MainTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
-		03620D4EA81151AB71F38192 /* Wanderly.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Wanderly.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		03620D4EA81151AB71F38192 /* Wanderly.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Wanderly.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0D156F23B00EF46DFF6839FD /* CardPopupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardPopupViewController.swift; sourceTree = "<group>"; };
 		0FDD27DF19ECAF63FB65F14B /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		1009B94D3E8F7B1CBA6240DA /* DestinationFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DestinationFilter.swift; sourceTree = "<group>"; };
@@ -52,6 +70,8 @@
 		333F7E6F39BBBE1860B8C356 /* FilterSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterSheetViewController.swift; sourceTree = "<group>"; };
 		40690BED3CC78999E33B342B /* ViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerTests.swift; sourceTree = "<group>"; };
 		40B1B99A520854480B144798 /* DiscoverViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverViewController.swift; sourceTree = "<group>"; };
+		42A25650307CC1390008380E /* Pendo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Pendo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		42A25655307CC1460008380E /* Pendo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Pendo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		47E25270189AA48EC034C854 /* DestinationFilterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DestinationFilterTests.swift; sourceTree = "<group>"; };
 		5741C5F9F50D9D8F277DEFD0 /* TripsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TripsViewController.swift; sourceTree = "<group>"; };
 		5940035E6984FD881B53EE11 /* ToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastView.swift; sourceTree = "<group>"; };
@@ -71,11 +91,12 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		A1B2C3D4E5F60718293A4B5D /* Frameworks */ = {
+		42A25653307CC1390008380E /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A1B2C3D4E5F60718293A4B5C /* Pendo in Frameworks */,
+				42A25651307CC1390008380E /* Pendo.framework in Frameworks */,
+				42A25656307CC1460008380E /* Pendo.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -87,6 +108,7 @@
 			children = (
 				44A03D4CF06B6AEAC1F22E00 /* Wanderly */,
 				88AC3F7EF696182FAE2DFB37 /* WanderlyTests */,
+				42A2564F307CC1390008380E /* Frameworks */,
 				D4876E130669B270D00D1540 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -137,6 +159,15 @@
 				5940035E6984FD881B53EE11 /* ToastView.swift */,
 			);
 			path = Components;
+			sourceTree = "<group>";
+		};
+		42A2564F307CC1390008380E /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				42A25655307CC1460008380E /* Pendo.framework */,
+				42A25650307CC1390008380E /* Pendo.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		44A03D4CF06B6AEAC1F22E00 /* Wanderly */ = {
@@ -243,8 +274,9 @@
 			buildConfigurationList = 3ADEC6F85D8EC51D5FBF311E /* Build configuration list for PBXNativeTarget "Wanderly" */;
 			buildPhases = (
 				5F6C575670A099365C547BEA /* Sources */,
-				A1B2C3D4E5F60718293A4B5D /* Frameworks */,
 				68C237C0965124415B58F445 /* Resources */,
+				42A25653307CC1390008380E /* Frameworks */,
+				42A25654307CC1390008380E /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -252,7 +284,6 @@
 			);
 			name = Wanderly;
 			packageProductDependencies = (
-				A1B2C3D4E5F60718293A4B5F /* Pendo */,
 			);
 			productName = Wanderly;
 			productReference = 03620D4EA81151AB71F38192 /* Wanderly.app */;
@@ -287,7 +318,6 @@
 			mainGroup = 28117A7B622428ED58F18AB9;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				A1B2C3D4E5F60718293A4B5E /* XCRemoteSwiftPackageReference "pendo-mobile-ios" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = D4876E130669B270D00D1540 /* Products */;
@@ -588,25 +618,6 @@
 			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		A1B2C3D4E5F60718293A4B5E /* XCRemoteSwiftPackageReference "pendo-mobile-ios" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/pendo-io/pendo-mobile-ios";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 3.9.2;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		A1B2C3D4E5F60718293A4B5F /* Pendo */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = A1B2C3D4E5F60718293A4B5E /* XCRemoteSwiftPackageReference "pendo-mobile-ios" */;
-			productName = Pendo;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = E03D93A0B433FED35DCE12F1 /* Project object */;
 }
