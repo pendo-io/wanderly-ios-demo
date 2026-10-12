@@ -372,7 +372,7 @@
 				);
 				MARKETING_VERSION = 1.0;
 				PENDO_APP_KEY = "";
-				PENDO_URL_SCHEME = "";
+				PENDO_URL_SCHEME = "pendo-dd740083";
 				PRODUCT_BUNDLE_IDENTIFIER = com.demo.wanderly;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -533,7 +533,7 @@
 				);
 				MARKETING_VERSION = 1.0;
 				PENDO_APP_KEY = "";
-				PENDO_URL_SCHEME = "";
+				PENDO_URL_SCHEME = "pendo-dd740083";
 				PRODUCT_BUNDLE_IDENTIFIER = com.demo.wanderly;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
