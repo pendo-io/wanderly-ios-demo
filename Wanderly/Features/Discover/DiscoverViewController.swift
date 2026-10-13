@@ -1,3 +1,4 @@
+import Pendo
 import UIKit
 
 final class DiscoverViewController: UIViewController {
@@ -59,6 +60,11 @@ final class DiscoverViewController: UIViewController {
         let sheet = FilterSheetViewController(filter: filter) { [weak self] updated in
             self?.filter = updated
             self?.applySnapshot()
+            PendoManager.shared().track("destination_filters_applied", properties: [
+                "sort": updated.sort.rawValue,
+                "max_price": updated.maxPrice,
+                "results_count": updated.apply(to: Destination.samples).count
+            ])
         }
         present(sheet, animated: true)
     }

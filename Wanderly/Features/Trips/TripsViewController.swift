@@ -1,3 +1,4 @@
+import Pendo
 import UIKit
 
 final class TripsViewController: UITableViewController {
@@ -35,7 +36,9 @@ final class TripsViewController: UITableViewController {
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
         alert.addAction(UIAlertAction(title: "Clear", style: .destructive) { [weak self] _ in
             guard let self else { return }
+            let clearedTripCount = tripStore.trips.count
             tripStore.removeAll()
+            PendoManager.shared().track("trips_cleared", properties: ["cleared_trip_count": clearedTripCount])
             ToastView.show("All trips cleared", symbol: "trash.fill", in: view)
         })
         present(alert, animated: true)
@@ -60,10 +63,20 @@ final class TripsViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let delete = UIContextualAction(style: .destructive, title: "Remove") { [weak self] _, _, completion in
-            self?.tripStore.remove(at: indexPath.row)
+            self?.removeTrip(at: indexPath.row)
             completion(true)
         }
         delete.image = UIImage(systemName: "trash")
         return UISwipeActionsConfiguration(actions: [delete])
+    }
+
+    private func removeTrip(at index: Int) {
+        let trip = tripStore.trips[index]
+        tripStore.remove(at: index)
+        PendoManager.shared().track("trip_removed", properties: [
+            "destination_id": trip.id,
+            "destination_name": trip.name,
+            "remaining_trip_count": tripStore.trips.count
+        ])
     }
 }

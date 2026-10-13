@@ -1,3 +1,4 @@
+import Pendo
 import UIKit
 
 final class DestinationDetailViewController: UIViewController {
@@ -135,7 +136,18 @@ final class DestinationDetailViewController: UIViewController {
     }
 
     private func addToTrips() {
+        let tripCountBefore = tripStore.trips.count
         tripStore.add(destination)
+        if tripStore.trips.count > tripCountBefore {
+            PendoManager.shared().track("trip_saved", properties: [
+                "destination_id": destination.id,
+                "destination_name": destination.name,
+                "country": destination.country,
+                "price_per_night": destination.pricePerNight,
+                "rating": destination.rating,
+                "trip_count": tripStore.trips.count
+            ])
+        }
         let popup = CardPopupViewController(symbol: "checkmark.seal.fill", headline: "Trip saved!", message: "\(destination.name) is waiting for you in the Trips tab.", buttonTitle: "Awesome", colors: destination.colors)
         present(popup, animated: true)
     }
@@ -151,12 +163,29 @@ final class DestinationDetailViewController: UIViewController {
 
     private func copyLink() {
         UIPasteboard.general.string = shareText
+        PendoManager.shared().track("destination_shared", properties: [
+            "destination_id": destination.id,
+            "share_method": "copy_link",
+            "activity_type": "copy_link",
+            "completed": true
+        ])
         ToastView.show("Link copied", symbol: "link", in: view)
     }
 
     private func presentShareSheet() {
         let activity = UIActivityViewController(activityItems: [shareText], applicationActivities: nil)
         activity.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
+        let destinationId = destination.id
+        // Only completed shares count; dismissing the share sheet does not fire the event.
+        activity.completionWithItemsHandler = { activityType, completed, _, _ in
+            guard completed else { return }
+            PendoManager.shared().track("destination_shared", properties: [
+                "destination_id": destinationId,
+                "share_method": "share_sheet",
+                "activity_type": activityType?.rawValue ?? "unknown",
+                "completed": completed
+            ])
+        }
         present(activity, animated: true)
     }
 

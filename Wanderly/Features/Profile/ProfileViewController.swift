@@ -1,3 +1,4 @@
+import Pendo
 import UIKit
 
 final class ProfileViewController: UITableViewController {
@@ -98,6 +99,7 @@ final class ProfileViewController: UITableViewController {
             let toggle = UISwitch()
             toggle.addAction(UIAction { [weak self] action in
                 guard let self, let toggle = action.sender as? UISwitch else { return }
+                PendoManager.shared().track("trip_reminders_toggled", properties: ["enabled": toggle.isOn])
                 ToastView.show(toggle.isOn ? "Reminders on" : "Reminders off", symbol: "bell.fill", in: view)
             }, for: .valueChanged)
             return toggle
@@ -132,7 +134,9 @@ final class ProfileViewController: UITableViewController {
         let sheet = UIAlertController(title: "Sign out?", message: "Your saved trips will be cleared.", preferredStyle: .actionSheet)
         sheet.addAction(UIAlertAction(title: "Sign out", style: .destructive) { [weak self] _ in
             guard let self else { return }
+            let clearedTripCount = tripStore.trips.count
             tripStore.removeAll()
+            PendoManager.shared().track("user_signed_out", properties: ["cleared_trip_count": clearedTripCount])
             ToastView.show("Signed out", symbol: "hand.wave.fill", in: view)
         })
         sheet.addAction(UIAlertAction(title: "Cancel", style: .cancel))
