@@ -1,3 +1,4 @@
+import Pendo
 import UIKit
 
 final class DestinationDetailViewController: UIViewController {
@@ -136,6 +137,13 @@ final class DestinationDetailViewController: UIViewController {
 
     private func addToTrips() {
         tripStore.add(destination)
+        PendoManager.shared().track("trip_saved", properties: [
+            "destination_id": destination.id,
+            "destination_name": destination.name,
+            "country": destination.country,
+            "price_per_night": destination.pricePerNight,
+            "trip_count": tripStore.trips.count
+        ])
         let popup = CardPopupViewController(symbol: "checkmark.seal.fill", headline: "Trip saved!", message: "\(destination.name) is waiting for you in the Trips tab.", buttonTitle: "Awesome", colors: destination.colors)
         present(popup, animated: true)
     }
@@ -151,13 +159,34 @@ final class DestinationDetailViewController: UIViewController {
 
     private func copyLink() {
         UIPasteboard.general.string = shareText
+        trackShare(method: "copy_link")
         ToastView.show("Link copied", symbol: "link", in: view)
     }
 
     private func presentShareSheet() {
         let activity = UIActivityViewController(activityItems: [shareText], applicationActivities: nil)
+        // Counted only when the share actually completes, not when the sheet is dismissed.
+        activity.completionWithItemsHandler = { [weak self] activityType, completed, _, _ in
+            guard completed else { return }
+            let activityName = activityType?.rawValue
+            MainActor.assumeIsolated {
+                self?.trackShare(method: "share_sheet", activityType: activityName)
+            }
+        }
         activity.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
         present(activity, animated: true)
+    }
+
+    private func trackShare(method: String, activityType: String? = nil) {
+        var properties: [AnyHashable: Any] = [
+            "destination_id": destination.id,
+            "destination_name": destination.name,
+            "method": method
+        ]
+        if let activityType {
+            properties["activity_type"] = activityType
+        }
+        PendoManager.shared().track("destination_shared", properties: properties)
     }
 
     private var shareText: String {

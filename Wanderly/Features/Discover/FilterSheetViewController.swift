@@ -1,3 +1,4 @@
+import Pendo
 import UIKit
 
 final class FilterSheetViewController: UIViewController {
@@ -88,6 +89,11 @@ final class FilterSheetViewController: UIViewController {
     }
 
     private func apply() {
+        PendoManager.shared().track("destination_filters_applied", properties: [
+            "sort": filter.sort.rawValue,
+            "max_price": filter.maxPrice,
+            "result_count": filter.apply(to: Destination.samples).count
+        ])
         onApply(filter)
         dismiss(animated: true)
     }
