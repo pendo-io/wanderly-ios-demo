@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workspace
+   version = "1.0">
+   <FileRef
+      location = "absolute:/Users/maxim.shnirman/Projects/iOS/SDK/Insert-iOS-SDK/PendoSDK/PendoSDK.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "absolute:/Users/maxim.shnirman/Projects/iOS/SDK/Insert-iOS-SDK/Pods/Pods.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "container:Wanderly.xcodeproj">
+   </FileRef>
+</Workspace>

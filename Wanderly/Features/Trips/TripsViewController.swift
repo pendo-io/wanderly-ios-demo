@@ -1,3 +1,4 @@
+import Pendo
 import UIKit
 
 final class TripsViewController: UITableViewController {
@@ -19,6 +20,12 @@ final class TripsViewController: UITableViewController {
         render()
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        PendoManager.shared().pageView("Trips", properties: nil)
+        PendoManager.shared().featureUsed("View saved trips", properties: nil)
+    }
+
     @objc private func tripsChanged() {
         render()
     }
@@ -36,6 +43,7 @@ final class TripsViewController: UITableViewController {
         alert.addAction(UIAlertAction(title: "Clear", style: .destructive) { [weak self] _ in
             guard let self else { return }
             tripStore.removeAll()
+            PendoManager.shared().featureUsed("Clear all trips", properties: nil)
             ToastView.show("All trips cleared", symbol: "trash.fill", in: view)
         })
         present(alert, animated: true)
@@ -61,6 +69,7 @@ final class TripsViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let delete = UIContextualAction(style: .destructive, title: "Remove") { [weak self] _, _, completion in
             self?.tripStore.remove(at: indexPath.row)
+            PendoManager.shared().featureUsed("Remove a trip", properties: nil)
             completion(true)
         }
         delete.image = UIImage(systemName: "trash")

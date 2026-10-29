@@ -20,6 +20,21 @@
 	<string>1.0</string>
 	<key>CFBundleVersion</key>
 	<string>1</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>pendo-pairing</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>pendo-0d44837c</string>
+			</array>
+		</dict>
+	</array>
+	<key>PendoAppKey</key>
+	<string>eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhY2VudGVyIjoidXMiLCJrZXkiOiI0ZmZiYmQyMTNiODEzMzg5OTg4NDVkYWU1ZWI1MTJkOTdjYjZiMDg1MTY1ZWNhNGQyZDhlYjI4MWJjMWI5YTI1NzA1Yjg1ZTQ4OTI0MjlmN2M5ZDE0MTFkMmVhMTg4ZDE5OThiOTlhZjViYzFiOTE5ODg3MzBiNzE0NmFiMjE1M2ZjZmZmM2UxZmI0Y2U1YTdjNzVjODY5ZWMxZWRlM2M5OTBlZjgwZGE3NGJhYTZiYjBlZTg1OTA4NTY3OThkOTUuZWY0MmM3YzU1ZWI4ZDYxNDY0ZGI1NGYzMTNlN2RmM2EuMGQwY2ZhZmJhOGMyOTg1NWZlYWFjNjk4ZTJmNzRjYTY0YjY1OTc2MWQ0ZGVlMjVmMTZkZmIzNzk4Y2Y4MWY4OCJ9.hSTZvSmDUEfQF9UmkEYPSaZBkZhwVA3NZB3hMSGWBlDXu9kZUPbL-TtzYtfUeBvjOGlaIfryJaU0SQdZOVIWWR49uYRcHnXdOFisxFej_i3t7a6qdLlU517zCbETDQpeX0QFiARORjvYJGcvedgtyHMUUgw_s9FsiIniMfdd-KI</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
