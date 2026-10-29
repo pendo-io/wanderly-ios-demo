@@ -22,6 +22,11 @@ final class DestinationDetailViewController: UIViewController {
         setUpViews()
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        PendoManager.shared().pageView("Destination Detail", properties: nil)
+    }
+
     private func setUpViews() {
         let hero = makeHero()
         let infoCard = makeInfoCard()
@@ -136,23 +141,14 @@ final class DestinationDetailViewController: UIViewController {
     }
 
     private func addToTrips() {
-        let tripCountBefore = tripStore.trips.count
+        PendoManager.shared().featureUsed("Add destination to trips", properties: nil)
         tripStore.add(destination)
-        if tripStore.trips.count > tripCountBefore {
-            PendoManager.shared().track("trip_saved", properties: [
-                "destination_id": destination.id,
-                "destination_name": destination.name,
-                "country": destination.country,
-                "price_per_night": destination.pricePerNight,
-                "rating": destination.rating,
-                "trip_count": tripStore.trips.count
-            ])
-        }
         let popup = CardPopupViewController(symbol: "checkmark.seal.fill", headline: "Trip saved!", message: "\(destination.name) is waiting for you in the Trips tab.", buttonTitle: "Awesome", colors: destination.colors)
         present(popup, animated: true)
     }
 
     private func showShareOptions() {
+        PendoManager.shared().featureUsed("Open share options", properties: nil)
         let sheet = UIAlertController(title: destination.name, message: "Share this destination", preferredStyle: .actionSheet)
         sheet.addAction(UIAlertAction(title: "Copy link", style: .default) { [weak self] _ in self?.copyLink() })
         sheet.addAction(UIAlertAction(title: "Share…", style: .default) { [weak self] _ in self?.presentShareSheet() })
@@ -162,30 +158,16 @@ final class DestinationDetailViewController: UIViewController {
     }
 
     private func copyLink() {
+        PendoManager.shared().featureUsed("Copy destination link", properties: nil)
         UIPasteboard.general.string = shareText
-        PendoManager.shared().track("destination_shared", properties: [
-            "destination_id": destination.id,
-            "share_method": "copy_link",
-            "activity_type": "copy_link",
-            "completed": true
-        ])
+        PendoManager.shared().track("Link copied", properties: nil)
         ToastView.show("Link copied", symbol: "link", in: view)
     }
 
     private func presentShareSheet() {
+        PendoManager.shared().featureUsed("Share destination externally", properties: nil)
         let activity = UIActivityViewController(activityItems: [shareText], applicationActivities: nil)
         activity.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
-        let destinationId = destination.id
-        // Only completed shares count; dismissing the share sheet does not fire the event.
-        activity.completionWithItemsHandler = { activityType, completed, _, _ in
-            guard completed else { return }
-            PendoManager.shared().track("destination_shared", properties: [
-                "destination_id": destinationId,
-                "share_method": "share_sheet",
-                "activity_type": activityType?.rawValue ?? "unknown",
-                "completed": completed
-            ])
-        }
         present(activity, animated: true)
     }
 

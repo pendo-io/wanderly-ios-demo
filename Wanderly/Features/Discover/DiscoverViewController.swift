@@ -25,6 +25,11 @@ final class DiscoverViewController: UIViewController {
         applySnapshot()
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        PendoManager.shared().pageView("Discover", properties: nil)
+    }
+
     private func setUpCollectionView() {
         collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: makeLayout())
         collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
@@ -54,23 +59,21 @@ final class DiscoverViewController: UIViewController {
         snapshot.appendSections([.main])
         snapshot.appendItems(filter.apply(to: Destination.samples))
         dataSource.apply(snapshot, animatingDifferences: true)
+        PendoManager.shared().featureUsed("Browse destination cards", properties: nil)
     }
 
     private func showFilters() {
+        PendoManager.shared().featureUsed("Open filter sheet", properties: nil)
         let sheet = FilterSheetViewController(filter: filter) { [weak self] updated in
             self?.filter = updated
             self?.applySnapshot()
-            PendoManager.shared().track("destination_filters_applied", properties: [
-                "sort": updated.sort.rawValue,
-                "max_price": updated.maxPrice,
-                "results_count": updated.apply(to: Destination.samples).count
-            ])
         }
         present(sheet, animated: true)
     }
 
     private func showSurprise() {
         guard let pick = Destination.samples.randomElement() else { return }
+        PendoManager.shared().featureUsed("Get surprise destination", properties: nil)
         let popup = CardPopupViewController(symbol: pick.symbol, headline: "How about \(pick.name)?", message: pick.summary, buttonTitle: "Take me there", colors: pick.colors) { [weak self] in
             self?.showDetail(for: pick)
         }
@@ -85,6 +88,7 @@ final class DiscoverViewController: UIViewController {
 extension DiscoverViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let destination = dataSource.itemIdentifier(for: indexPath) else { return }
+        PendoManager.shared().featureUsed("Select a destination", properties: nil)
         showDetail(for: destination)
     }
 }

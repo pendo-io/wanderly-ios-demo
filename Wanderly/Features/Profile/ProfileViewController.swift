@@ -42,6 +42,11 @@ final class ProfileViewController: UITableViewController {
         tableView.tableHeaderView = makeHeader()
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        PendoManager.shared().pageView("Profile", properties: nil)
+    }
+
     private func makeHeader() -> UIView {
         let header = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: 180))
         let avatar = GradientView(colors: [Theme.Color.accent, .systemPink])
@@ -99,8 +104,8 @@ final class ProfileViewController: UITableViewController {
             let toggle = UISwitch()
             toggle.addAction(UIAction { [weak self] action in
                 guard let self, let toggle = action.sender as? UISwitch else { return }
-                PendoManager.shared().track("trip_reminders_toggled", properties: ["enabled": toggle.isOn])
                 ToastView.show(toggle.isOn ? "Reminders on" : "Reminders off", symbol: "bell.fill", in: view)
+                PendoManager.shared().featureUsed("Toggle trip reminders", properties: nil)
             }, for: .valueChanged)
             return toggle
         case .darkMode:
@@ -109,6 +114,7 @@ final class ProfileViewController: UITableViewController {
             toggle.addAction(UIAction { [weak self] action in
                 guard let toggle = action.sender as? UISwitch else { return }
                 self?.view.window?.overrideUserInterfaceStyle = toggle.isOn ? .dark : .light
+                PendoManager.shared().featureUsed("Toggle dark mode", properties: nil)
             }, for: .valueChanged)
             return toggle
         case .about, .signOut:
@@ -126,6 +132,7 @@ final class ProfileViewController: UITableViewController {
     }
 
     private func showAbout() {
+        PendoManager.shared().featureUsed("View About Wanderly", properties: nil)
         let popup = CardPopupViewController(symbol: "globe.europe.africa.fill", headline: "Wanderly 1.0", message: "A tiny demo app for exploring destinations and planning trips.", buttonTitle: "Close", colors: [Theme.Color.accent, .systemTeal])
         present(popup, animated: true)
     }
@@ -134,9 +141,9 @@ final class ProfileViewController: UITableViewController {
         let sheet = UIAlertController(title: "Sign out?", message: "Your saved trips will be cleared.", preferredStyle: .actionSheet)
         sheet.addAction(UIAlertAction(title: "Sign out", style: .destructive) { [weak self] _ in
             guard let self else { return }
-            let clearedTripCount = tripStore.trips.count
+            PendoManager.shared().featureUsed("Sign out", properties: nil)
             tripStore.removeAll()
-            PendoManager.shared().track("user_signed_out", properties: ["cleared_trip_count": clearedTripCount])
+            PendoManager.shared().track("Signed out", properties: nil)
             ToastView.show("Signed out", symbol: "hand.wave.fill", in: view)
         })
         sheet.addAction(UIAlertAction(title: "Cancel", style: .cancel))
