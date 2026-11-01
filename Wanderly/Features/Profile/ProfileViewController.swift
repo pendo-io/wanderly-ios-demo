@@ -134,6 +134,7 @@ final class ProfileViewController: UITableViewController {
     private func showAbout() {
         PendoManager.shared().featureUsed("View About Wanderly", properties: nil)
         let popup = CardPopupViewController(symbol: "globe.europe.africa.fill", headline: "Wanderly 1.0", message: "A tiny demo app for exploring destinations and planning trips.", buttonTitle: "Close", colors: [Theme.Color.accent, .systemTeal])
+        PendoManager.shared().pageView("About Wanderly", properties: nil)
         present(popup, animated: true)
     }
 

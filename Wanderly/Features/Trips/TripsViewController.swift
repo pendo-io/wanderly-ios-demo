@@ -33,6 +33,7 @@ final class TripsViewController: UITableViewController {
     private func render() {
         tableView.reloadData()
         tableView.backgroundView = tripStore.trips.isEmpty ? emptyState : nil
+        if tripStore.trips.isEmpty { PendoManager.shared().pageView("Trips Empty State", properties: nil) }
         navigationItem.rightBarButtonItem?.isEnabled = !tripStore.trips.isEmpty
         navigationController?.tabBarItem.badgeValue = tripStore.trips.isEmpty ? nil : "\(tripStore.trips.count)"
     }

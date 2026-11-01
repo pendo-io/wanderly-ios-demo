@@ -67,6 +67,7 @@ final class DiscoverViewController: UIViewController {
         let sheet = FilterSheetViewController(filter: filter) { [weak self] updated in
             self?.filter = updated
             self?.applySnapshot()
+            PendoManager.shared().track("Filters applied", properties: nil)
         }
         present(sheet, animated: true)
     }
@@ -77,6 +78,7 @@ final class DiscoverViewController: UIViewController {
         let popup = CardPopupViewController(symbol: pick.symbol, headline: "How about \(pick.name)?", message: pick.summary, buttonTitle: "Take me there", colors: pick.colors) { [weak self] in
             self?.showDetail(for: pick)
         }
+        PendoManager.shared().pageView("Surprise Me Popup", properties: nil)
         present(popup, animated: true)
     }
 

@@ -144,6 +144,7 @@ final class DestinationDetailViewController: UIViewController {
         PendoManager.shared().featureUsed("Add destination to trips", properties: nil)
         tripStore.add(destination)
         let popup = CardPopupViewController(symbol: "checkmark.seal.fill", headline: "Trip saved!", message: "\(destination.name) is waiting for you in the Trips tab.", buttonTitle: "Awesome", colors: destination.colors)
+        PendoManager.shared().pageView("Trip Saved Popup", properties: nil)
         present(popup, animated: true)
     }
 
