@@ -1,3 +1,4 @@
+import Pendo
 import UIKit
 
 final class DiscoverViewController: UIViewController {
@@ -22,6 +23,11 @@ final class DiscoverViewController: UIViewController {
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "sparkles"), primaryAction: UIAction { [weak self] _ in self?.showSurprise() })
         setUpCollectionView()
         applySnapshot()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        PendoManager.shared().pageView("Discover")
     }
 
     private func setUpCollectionView() {
@@ -53,25 +59,32 @@ final class DiscoverViewController: UIViewController {
         snapshot.appendSections([.main])
         snapshot.appendItems(filter.apply(to: Destination.samples))
         dataSource.apply(snapshot, animatingDifferences: true)
+        PendoManager.shared().featureUsed("Browse destinations")
     }
 
     private func showFilters() {
+        PendoManager.shared().featureUsed("Open filter sheet")
         let sheet = FilterSheetViewController(filter: filter) { [weak self] updated in
             self?.filter = updated
             self?.applySnapshot()
+            PendoManager.shared().track("Filters applied", properties: nil)
         }
         present(sheet, animated: true)
     }
 
     private func showSurprise() {
+        PendoManager.shared().featureUsed("Get a surprise suggestion")
         guard let pick = Destination.samples.randomElement() else { return }
         let popup = CardPopupViewController(symbol: pick.symbol, headline: "How about \(pick.name)?", message: pick.summary, buttonTitle: "Take me there", colors: pick.colors) { [weak self] in
             self?.showDetail(for: pick)
         }
-        present(popup, animated: true)
+        present(popup, animated: true) {
+            PendoManager.shared().pageView("Surprise Me")
+        }
     }
 
     private func showDetail(for destination: Destination) {
+        PendoManager.shared().featureUsed("View destination detail")
         navigationController?.pushViewController(DestinationDetailViewController(destination: destination, tripStore: tripStore), animated: true)
     }
 }
