@@ -1,3 +1,4 @@
+import PendoSDK
 import UIKit
 
 final class DiscoverViewController: UIViewController {
@@ -24,6 +25,11 @@ final class DiscoverViewController: UIViewController {
         applySnapshot()
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        PendoManager.shared().pageView("Discover")
+    }
+
     private func setUpCollectionView() {
         collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: makeLayout())
         collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
@@ -35,6 +41,7 @@ final class DiscoverViewController: UIViewController {
         dataSource = UICollectionViewDiffableDataSource(collectionView: collectionView) { collectionView, indexPath, destination in
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DestinationCell.reuseIdentifier, for: indexPath) as! DestinationCell
             cell.configure(with: destination)
+            PendoManager.shared().featureUsed("Browse destination cards")
             return cell
         }
     }
@@ -56,18 +63,22 @@ final class DiscoverViewController: UIViewController {
     }
 
     private func showFilters() {
+        PendoManager.shared().featureUsed("Open filter sheet")
         let sheet = FilterSheetViewController(filter: filter) { [weak self] updated in
             self?.filter = updated
             self?.applySnapshot()
+            PendoManager.shared().track("Filters applied", properties: nil)
         }
         present(sheet, animated: true)
     }
 
     private func showSurprise() {
+        PendoManager.shared().featureUsed("Use Surprise me")
         guard let pick = Destination.samples.randomElement() else { return }
         let popup = CardPopupViewController(symbol: pick.symbol, headline: "How about \(pick.name)?", message: pick.summary, buttonTitle: "Take me there", colors: pick.colors) { [weak self] in
             self?.showDetail(for: pick)
         }
+        PendoManager.shared().pageView("Surprise Me")
         present(popup, animated: true)
     }
 
@@ -79,6 +90,7 @@ final class DiscoverViewController: UIViewController {
 extension DiscoverViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let destination = dataSource.itemIdentifier(for: indexPath) else { return }
+        PendoManager.shared().featureUsed("Open destination detail")
         showDetail(for: destination)
     }
 }

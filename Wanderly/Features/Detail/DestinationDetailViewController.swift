@@ -1,3 +1,4 @@
+import PendoSDK
 import UIKit
 
 final class DestinationDetailViewController: UIViewController {
@@ -19,6 +20,11 @@ final class DestinationDetailViewController: UIViewController {
         view.backgroundColor = Theme.Color.background
         navigationItem.rightBarButtonItem = UIBarButtonItem(systemItem: .action, primaryAction: UIAction { [weak self] _ in self?.showShareOptions() })
         setUpViews()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        PendoManager.shared().pageView("Destination Detail")
     }
 
     private func setUpViews() {
@@ -135,26 +141,33 @@ final class DestinationDetailViewController: UIViewController {
     }
 
     private func addToTrips() {
+        PendoManager.shared().featureUsed("Add destination to trips")
         tripStore.add(destination)
+        PendoManager.shared().track("Trip saved", properties: nil)
         let popup = CardPopupViewController(symbol: "checkmark.seal.fill", headline: "Trip saved!", message: "\(destination.name) is waiting for you in the Trips tab.", buttonTitle: "Awesome", colors: destination.colors)
         present(popup, animated: true)
     }
 
     private func showShareOptions() {
+        PendoManager.shared().featureUsed("Open share options")
         let sheet = UIAlertController(title: destination.name, message: "Share this destination", preferredStyle: .actionSheet)
         sheet.addAction(UIAlertAction(title: "Copy link", style: .default) { [weak self] _ in self?.copyLink() })
         sheet.addAction(UIAlertAction(title: "Share…", style: .default) { [weak self] _ in self?.presentShareSheet() })
         sheet.addAction(UIAlertAction(title: "Cancel", style: .cancel))
         sheet.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
+        PendoManager.shared().pageView("Share Options")
         present(sheet, animated: true)
     }
 
     private func copyLink() {
+        PendoManager.shared().featureUsed("Copy destination link")
         UIPasteboard.general.string = shareText
+        PendoManager.shared().track("Destination link copied", properties: nil)
         ToastView.show("Link copied", symbol: "link", in: view)
     }
 
     private func presentShareSheet() {
+        PendoManager.shared().featureUsed("Share destination via share sheet")
         let activity = UIActivityViewController(activityItems: [shareText], applicationActivities: nil)
         activity.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
         present(activity, animated: true)

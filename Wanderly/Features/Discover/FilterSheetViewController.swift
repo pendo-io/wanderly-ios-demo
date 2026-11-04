@@ -1,3 +1,4 @@
+import PendoSDK
 import UIKit
 
 final class FilterSheetViewController: UIViewController {
@@ -22,6 +23,11 @@ final class FilterSheetViewController: UIViewController {
         view.backgroundColor = .systemBackground
         setUpViews()
         render()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        PendoManager.shared().pageView("Filters")
     }
 
     private func configureSheet() {
@@ -80,14 +86,17 @@ final class FilterSheetViewController: UIViewController {
 
     private func sortChanged() {
         filter.sort = DestinationSort.allCases[sortControl.selectedSegmentIndex]
+        PendoManager.shared().featureUsed("Set sort order")
     }
 
     private func priceChanged() {
         filter.maxPrice = Int(priceSlider.value.rounded())
         priceLabel.text = "$\(filter.maxPrice)"
+        PendoManager.shared().featureUsed("Set max price filter")
     }
 
     private func apply() {
+        PendoManager.shared().featureUsed("Apply filters")
         onApply(filter)
         dismiss(animated: true)
     }

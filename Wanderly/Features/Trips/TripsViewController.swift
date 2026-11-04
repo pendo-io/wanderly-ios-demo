@@ -1,3 +1,4 @@
+import PendoSDK
 import UIKit
 
 final class TripsViewController: UITableViewController {
@@ -19,6 +20,11 @@ final class TripsViewController: UITableViewController {
         render()
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        PendoManager.shared().pageView("Trips")
+    }
+
     @objc private func tripsChanged() {
         render()
     }
@@ -35,7 +41,9 @@ final class TripsViewController: UITableViewController {
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
         alert.addAction(UIAlertAction(title: "Clear", style: .destructive) { [weak self] _ in
             guard let self else { return }
+            PendoManager.shared().featureUsed("Clear all trips")
             tripStore.removeAll()
+            PendoManager.shared().track("All trips cleared", properties: nil)
             ToastView.show("All trips cleared", symbol: "trash.fill", in: view)
         })
         present(alert, animated: true)
@@ -55,12 +63,15 @@ final class TripsViewController: UITableViewController {
         content.imageProperties.tintColor = trip.colors.first
         content.textProperties.font = Theme.roundedFont(.headline, weight: .semibold)
         cell.contentConfiguration = content
+        PendoManager.shared().featureUsed("View saved trips")
         return cell
     }
 
     override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let delete = UIContextualAction(style: .destructive, title: "Remove") { [weak self] _, _, completion in
+            PendoManager.shared().featureUsed("Remove a trip")
             self?.tripStore.remove(at: indexPath.row)
+            PendoManager.shared().track("Trip removed", properties: nil)
             completion(true)
         }
         delete.image = UIImage(systemName: "trash")
