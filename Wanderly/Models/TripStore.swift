@@ -1,4 +1,5 @@
 import Foundation
+import Pendo
 
 @MainActor
 final class TripStore {
@@ -14,15 +15,18 @@ final class TripStore {
         guard !contains(destination) else { return }
         trips.append(destination)
         notifyChange()
+        PendoManager.shared().track("Trip saved", properties: nil)
     }
 
     func remove(at index: Int) {
         trips.remove(at: index)
+        PendoManager.shared().track("Trip removed", properties: nil)
         notifyChange()
     }
 
     func removeAll() {
         trips.removeAll()
+        PendoManager.shared().track("All trips cleared", properties: nil)
         notifyChange()
     }
 

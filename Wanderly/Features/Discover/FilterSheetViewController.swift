@@ -1,3 +1,4 @@
+import Pendo
 import UIKit
 
 final class FilterSheetViewController: UIViewController {
@@ -19,6 +20,7 @@ final class FilterSheetViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.pageTrackId = "Filters"
         view.backgroundColor = .systemBackground
         setUpViews()
         render()
@@ -48,6 +50,7 @@ final class FilterSheetViewController: UIViewController {
 
         let priceHeader = UIStackView(arrangedSubviews: [priceTitle, priceLabel])
         let applyButton = PrimaryButton(title: "Show results", symbol: "line.3.horizontal.decrease") { [weak self] in self?.apply() }
+        applyButton.pendoTag = "Filter and sort destinations"
 
         let stack = UIStackView(arrangedSubviews: [titleLabel, sortTitle, sortControl, priceHeader, priceSlider, applyButton])
         stack.axis = .vertical

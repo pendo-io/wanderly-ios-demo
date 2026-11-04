@@ -1,3 +1,4 @@
+import Pendo
 import UIKit
 
 final class DestinationDetailViewController: UIViewController {
@@ -14,6 +15,7 @@ final class DestinationDetailViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.pageTrackId = "Destination Detail"
         title = destination.name
         navigationItem.largeTitleDisplayMode = .never
         view.backgroundColor = Theme.Color.background
@@ -130,20 +132,27 @@ final class DestinationDetailViewController: UIViewController {
         }
         let alert = UIAlertController(title: "Add \(destination.name)?", message: "We'll save it to your trips so you can plan later.", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
-        alert.addAction(UIAlertAction(title: "Add", style: .default) { [weak self] _ in self?.addToTrips() })
+        let addAction = UIAlertAction(title: "Add", style: .default) { [weak self] _ in self?.addToTrips() }
+        addAction.pendoTag = "Add destination to trips"
+        alert.addAction(addAction)
         present(alert, animated: true)
     }
 
     private func addToTrips() {
         tripStore.add(destination)
         let popup = CardPopupViewController(symbol: "checkmark.seal.fill", headline: "Trip saved!", message: "\(destination.name) is waiting for you in the Trips tab.", buttonTitle: "Awesome", colors: destination.colors)
+        popup.pageTrackId = "Trip Saved"
         present(popup, animated: true)
     }
 
     private func showShareOptions() {
         let sheet = UIAlertController(title: destination.name, message: "Share this destination", preferredStyle: .actionSheet)
-        sheet.addAction(UIAlertAction(title: "Copy link", style: .default) { [weak self] _ in self?.copyLink() })
-        sheet.addAction(UIAlertAction(title: "Share…", style: .default) { [weak self] _ in self?.presentShareSheet() })
+        let copyAction = UIAlertAction(title: "Copy link", style: .default) { [weak self] _ in self?.copyLink() }
+        copyAction.pendoTag = "Copy destination link"
+        sheet.addAction(copyAction)
+        let shareAction = UIAlertAction(title: "Share…", style: .default) { [weak self] _ in self?.presentShareSheet() }
+        shareAction.pendoTag = "Share destination via system sheet"
+        sheet.addAction(shareAction)
         sheet.addAction(UIAlertAction(title: "Cancel", style: .cancel))
         sheet.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
         present(sheet, animated: true)
