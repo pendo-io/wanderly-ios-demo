@@ -1,3 +1,4 @@
+import Pendo
 import UIKit
 
 final class DestinationDetailViewController: UIViewController {
@@ -14,10 +15,12 @@ final class DestinationDetailViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.pageTrackId = "Destination Detail"
         title = destination.name
         navigationItem.largeTitleDisplayMode = .never
         view.backgroundColor = Theme.Color.background
         navigationItem.rightBarButtonItem = UIBarButtonItem(systemItem: .action, primaryAction: UIAction { [weak self] _ in self?.showShareOptions() })
+        navigationItem.rightBarButtonItem?.pendoTag = "Open share options"
         setUpViews()
     }
 
@@ -25,6 +28,7 @@ final class DestinationDetailViewController: UIViewController {
         let hero = makeHero()
         let infoCard = makeInfoCard()
         let addButton = PrimaryButton(title: "Add to my trips", symbol: "plus.circle.fill") { [weak self] in self?.confirmAddToTrips() }
+        addButton.pendoTag = "Add destination to trips"
 
         let stack = UIStackView(arrangedSubviews: [hero, infoCard, addButton])
         stack.axis = .vertical
@@ -136,14 +140,21 @@ final class DestinationDetailViewController: UIViewController {
 
     private func addToTrips() {
         tripStore.add(destination)
+        PendoManager.shared().track("Trip saved", properties: nil)
         let popup = CardPopupViewController(symbol: "checkmark.seal.fill", headline: "Trip saved!", message: "\(destination.name) is waiting for you in the Trips tab.", buttonTitle: "Awesome", colors: destination.colors)
+        popup.pageTrackId = "Trip Saved"
         present(popup, animated: true)
     }
 
     private func showShareOptions() {
         let sheet = UIAlertController(title: destination.name, message: "Share this destination", preferredStyle: .actionSheet)
-        sheet.addAction(UIAlertAction(title: "Copy link", style: .default) { [weak self] _ in self?.copyLink() })
-        sheet.addAction(UIAlertAction(title: "Share…", style: .default) { [weak self] _ in self?.presentShareSheet() })
+        sheet.pageTrackId = "Share Options"
+        let copyAction = UIAlertAction(title: "Copy link", style: .default) { [weak self] _ in self?.copyLink() }
+        copyAction.pendoTag = "Copy destination link"
+        sheet.addAction(copyAction)
+        let shareAction = UIAlertAction(title: "Share…", style: .default) { [weak self] _ in self?.presentShareSheet() }
+        shareAction.pendoTag = "Share destination via system sheet"
+        sheet.addAction(shareAction)
         sheet.addAction(UIAlertAction(title: "Cancel", style: .cancel))
         sheet.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
         present(sheet, animated: true)
@@ -151,6 +162,7 @@ final class DestinationDetailViewController: UIViewController {
 
     private func copyLink() {
         UIPasteboard.general.string = shareText
+        PendoManager.shared().track("Link copied", properties: nil)
         ToastView.show("Link copied", symbol: "link", in: view)
     }
 

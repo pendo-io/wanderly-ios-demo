@@ -1,3 +1,4 @@
+import Pendo
 import UIKit
 
 final class TripsViewController: UITableViewController {
@@ -13,8 +14,10 @@ final class TripsViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.pageTrackId = "Trips"
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "TripCell")
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Clear", primaryAction: UIAction { [weak self] _ in self?.confirmClearAll() })
+        navigationItem.rightBarButtonItem?.pendoTag = "Clear all trips"
         NotificationCenter.default.addObserver(self, selector: #selector(tripsChanged), name: TripStore.didChangeNotification, object: tripStore)
         render()
     }
@@ -26,6 +29,7 @@ final class TripsViewController: UITableViewController {
     private func render() {
         tableView.reloadData()
         tableView.backgroundView = tripStore.trips.isEmpty ? emptyState : nil
+        self.pageTrackId = tripStore.trips.isEmpty ? "Trips (Empty)" : "Trips"
         navigationItem.rightBarButtonItem?.isEnabled = !tripStore.trips.isEmpty
         navigationController?.tabBarItem.badgeValue = tripStore.trips.isEmpty ? nil : "\(tripStore.trips.count)"
     }
@@ -36,6 +40,7 @@ final class TripsViewController: UITableViewController {
         alert.addAction(UIAlertAction(title: "Clear", style: .destructive) { [weak self] _ in
             guard let self else { return }
             tripStore.removeAll()
+            PendoManager.shared().track("All trips cleared", properties: nil)
             ToastView.show("All trips cleared", symbol: "trash.fill", in: view)
         })
         present(alert, animated: true)
@@ -55,6 +60,7 @@ final class TripsViewController: UITableViewController {
         content.imageProperties.tintColor = trip.colors.first
         content.textProperties.font = Theme.roundedFont(.headline, weight: .semibold)
         cell.contentConfiguration = content
+        cell.pendoTag = "View saved trips"
         return cell
     }
 

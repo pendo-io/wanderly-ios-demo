@@ -1,3 +1,4 @@
+import Pendo
 import UIKit
 
 final class FilterSheetViewController: UIViewController {
@@ -19,6 +20,7 @@ final class FilterSheetViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.pageTrackId = "Filters"
         view.backgroundColor = .systemBackground
         setUpViews()
         render()
@@ -38,6 +40,7 @@ final class FilterSheetViewController: UIViewController {
 
         let sortTitle = sectionLabel("Sort by")
         sortControl.addAction(UIAction { [weak self] _ in self?.sortChanged() }, for: .valueChanged)
+        sortControl.pendoTag = "Sort destinations"
 
         let priceTitle = sectionLabel("Max price per night")
         priceLabel.font = Theme.roundedFont(.headline, weight: .semibold)
@@ -45,9 +48,11 @@ final class FilterSheetViewController: UIViewController {
         priceSlider.minimumValue = 80
         priceSlider.maximumValue = 250
         priceSlider.addAction(UIAction { [weak self] _ in self?.priceChanged() }, for: .valueChanged)
+        priceSlider.pendoTag = "Filter destinations by max price"
 
         let priceHeader = UIStackView(arrangedSubviews: [priceTitle, priceLabel])
         let applyButton = PrimaryButton(title: "Show results", symbol: "line.3.horizontal.decrease") { [weak self] in self?.apply() }
+        applyButton.pendoTag = "Apply filters"
 
         let stack = UIStackView(arrangedSubviews: [titleLabel, sortTitle, sortControl, priceHeader, priceSlider, applyButton])
         stack.axis = .vertical

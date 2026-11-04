@@ -1,3 +1,4 @@
+import Pendo
 import UIKit
 
 final class DiscoverViewController: UIViewController {
@@ -17,15 +18,19 @@ final class DiscoverViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.pageTrackId = "Discover"
         view.backgroundColor = Theme.Color.background
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "slider.horizontal.3"), primaryAction: UIAction { [weak self] _ in self?.showFilters() })
+        navigationItem.rightBarButtonItem?.pendoTag = "Open filter sheet"
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "sparkles"), primaryAction: UIAction { [weak self] _ in self?.showSurprise() })
+        navigationItem.leftBarButtonItem?.pendoTag = "Get a surprise suggestion"
         setUpCollectionView()
         applySnapshot()
     }
 
     private func setUpCollectionView() {
         collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: makeLayout())
+        collectionView.pendoTag = "Browse destinations"
         collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         collectionView.backgroundColor = .clear
         collectionView.delegate = self
@@ -35,6 +40,7 @@ final class DiscoverViewController: UIViewController {
         dataSource = UICollectionViewDiffableDataSource(collectionView: collectionView) { collectionView, indexPath, destination in
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DestinationCell.reuseIdentifier, for: indexPath) as! DestinationCell
             cell.configure(with: destination)
+            cell.pendoTag = "Open destination detail"
             return cell
         }
     }
@@ -68,6 +74,7 @@ final class DiscoverViewController: UIViewController {
         let popup = CardPopupViewController(symbol: pick.symbol, headline: "How about \(pick.name)?", message: pick.summary, buttonTitle: "Take me there", colors: pick.colors) { [weak self] in
             self?.showDetail(for: pick)
         }
+        popup.pageTrackId = "Surprise Me"
         present(popup, animated: true)
     }
 

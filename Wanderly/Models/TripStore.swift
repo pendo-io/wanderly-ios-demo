@@ -1,4 +1,5 @@
 import Foundation
+import Pendo
 
 @MainActor
 final class TripStore {
@@ -18,6 +19,7 @@ final class TripStore {
 
     func remove(at index: Int) {
         trips.remove(at: index)
+        PendoManager.shared().track("Trip removed", properties: nil)
         notifyChange()
     }
 
