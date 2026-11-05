@@ -1,3 +1,4 @@
+import Pendo
 import UIKit
 
 final class MainTabBarController: UITabBarController {
@@ -12,11 +13,13 @@ final class MainTabBarController: UITabBarController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        viewControllers = [
-            makeTab(DiscoverViewController(tripStore: tripStore), title: "Discover", symbol: "safari"),
-            makeTab(TripsViewController(tripStore: tripStore), title: "Trips", symbol: "suitcase"),
-            makeTab(ProfileViewController(tripStore: tripStore), title: "Profile", symbol: "person.crop.circle")
-        ]
+        let discover = makeTab(DiscoverViewController(tripStore: tripStore), title: "Discover", symbol: "safari")
+        discover.tabBarItem.pendoTag = "Switch to Discover tab"
+        let trips = makeTab(TripsViewController(tripStore: tripStore), title: "Trips", symbol: "suitcase")
+        trips.tabBarItem.pendoTag = "Switch to Trips tab"
+        let profile = makeTab(ProfileViewController(tripStore: tripStore), title: "Profile", symbol: "person.crop.circle")
+        profile.tabBarItem.pendoTag = "Switch to Profile tab"
+        viewControllers = [discover, trips, profile]
     }
 
     private func makeTab(_ root: UIViewController, title: String, symbol: String) -> UINavigationController {

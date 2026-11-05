@@ -1,3 +1,4 @@
+import Pendo
 import UIKit
 
 final class ProfileViewController: UITableViewController {
@@ -37,6 +38,7 @@ final class ProfileViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.pageTrackId = "Profile"
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "ProfileCell")
         tableView.tableHeaderView = makeHeader()
     }
@@ -86,6 +88,11 @@ final class ProfileViewController: UITableViewController {
         content.imageProperties.tintColor = row == .signOut ? .systemRed : Theme.Color.accent
         content.textProperties.color = row == .signOut ? .systemRed : .label
         cell.contentConfiguration = content
+        switch row {
+        case .about: cell.pendoTag = "View About Wanderly"
+        case .signOut: cell.pendoTag = "Open sign out confirmation"
+        case .notifications, .darkMode: cell.pendoTag = nil
+        }
         cell.accessoryView = switchView(for: row)
         cell.accessoryType = row == .about ? .disclosureIndicator : .none
         cell.selectionStyle = cell.accessoryView == nil ? .default : .none
@@ -96,6 +103,7 @@ final class ProfileViewController: UITableViewController {
         switch row {
         case .notifications:
             let toggle = UISwitch()
+            toggle.pendoTag = "Toggle trip reminders"
             toggle.addAction(UIAction { [weak self] action in
                 guard let self, let toggle = action.sender as? UISwitch else { return }
                 ToastView.show(toggle.isOn ? "Reminders on" : "Reminders off", symbol: "bell.fill", in: view)
@@ -103,6 +111,7 @@ final class ProfileViewController: UITableViewController {
             return toggle
         case .darkMode:
             let toggle = UISwitch()
+            toggle.pendoTag = "Toggle dark mode"
             toggle.isOn = traitCollection.userInterfaceStyle == .dark
             toggle.addAction(UIAction { [weak self] action in
                 guard let toggle = action.sender as? UISwitch else { return }
@@ -124,18 +133,25 @@ final class ProfileViewController: UITableViewController {
     }
 
     private func showAbout() {
-        let popup = CardPopupViewController(symbol: "globe.europe.africa.fill", headline: "Wanderly 1.0", message: "A tiny demo app for exploring destinations and planning trips.", buttonTitle: "Close", colors: [Theme.Color.accent, .systemTeal])
+        let popup = CardPopupViewController(symbol: "globe.europe.africa.fill", headline: "Wanderly 1.0", message: "A tiny demo app for exploring destinations and planning trips.", buttonTitle: "Close", colors: [Theme.Color.accent, .systemTeal], buttonPendoTag: "Dismiss About popup")
+        popup.pageTrackId = "About Wanderly"
         present(popup, animated: true)
     }
 
     private func confirmSignOut(from cell: UITableViewCell?) {
         let sheet = UIAlertController(title: "Sign out?", message: "Your saved trips will be cleared.", preferredStyle: .actionSheet)
-        sheet.addAction(UIAlertAction(title: "Sign out", style: .destructive) { [weak self] _ in
+        sheet.pageTrackId = "Sign Out"
+        let signOutAction = UIAlertAction(title: "Sign out", style: .destructive) { [weak self] _ in
             guard let self else { return }
             tripStore.removeAll()
+            PendoManager.shared().track("Signed out", properties: nil)
             ToastView.show("Signed out", symbol: "hand.wave.fill", in: view)
-        })
-        sheet.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        }
+        signOutAction.pendoTag = "Confirm sign out"
+        sheet.addAction(signOutAction)
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+        cancelAction.pendoTag = "Cancel sign out"
+        sheet.addAction(cancelAction)
         sheet.popoverPresentationController?.sourceView = cell
         sheet.popoverPresentationController?.sourceRect = cell?.bounds ?? .zero
         present(sheet, animated: true)
