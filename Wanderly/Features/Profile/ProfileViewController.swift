@@ -1,3 +1,4 @@
+import Pendo
 import UIKit
 import Pendo
 
@@ -92,6 +93,7 @@ final class ProfileViewController: UITableViewController {
         cell.accessoryType = row == .about ? .disclosureIndicator : .none
         cell.pendoTag = row == .about ? "View About Wanderly" : nil
         cell.selectionStyle = cell.accessoryView == nil ? .default : .none
+        cell.pendoTag = row == .about ? "View About Wanderly" : nil
         return cell
     }
 
