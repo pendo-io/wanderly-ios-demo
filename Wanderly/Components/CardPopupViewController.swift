@@ -1,4 +1,5 @@
 import UIKit
+import Pendo
 
 final class CardPopupViewController: UIViewController {
     private let symbol: String
@@ -72,6 +73,7 @@ final class CardPopupViewController: UIViewController {
         messageLabel.numberOfLines = 0
 
         let button = PrimaryButton(title: buttonTitle) { [weak self] in self?.close() }
+        button.pendoTag = "Navigate to suggested destination"
 
         let body = UIStackView(arrangedSubviews: [titleLabel, messageLabel, button])
         body.axis = .vertical

@@ -1,4 +1,5 @@
 import UIKit
+import Pendo
 
 final class TripsViewController: UITableViewController {
     private let tripStore: TripStore
@@ -13,6 +14,7 @@ final class TripsViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.pageTrackId = "Trips"
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "TripCell")
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Clear", primaryAction: UIAction { [weak self] _ in self?.confirmClearAll() })
         NotificationCenter.default.addObserver(self, selector: #selector(tripsChanged), name: TripStore.didChangeNotification, object: tripStore)
@@ -33,11 +35,13 @@ final class TripsViewController: UITableViewController {
     private func confirmClearAll() {
         let alert = UIAlertController(title: "Clear all trips?", message: "This removes every saved destination.", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
-        alert.addAction(UIAlertAction(title: "Clear", style: .destructive) { [weak self] _ in
+        let clearAction = UIAlertAction(title: "Clear", style: .destructive) { [weak self] _ in
             guard let self else { return }
             tripStore.removeAll()
             ToastView.show("All trips cleared", symbol: "trash.fill", in: view)
-        })
+        }
+        clearAction.pendoTag = "Clear all trips"
+        alert.addAction(clearAction)
         present(alert, animated: true)
     }
 
@@ -55,6 +59,7 @@ final class TripsViewController: UITableViewController {
         content.imageProperties.tintColor = trip.colors.first
         content.textProperties.font = Theme.roundedFont(.headline, weight: .semibold)
         cell.contentConfiguration = content
+        cell.pendoTag = "Remove a trip"
         return cell
     }
 
