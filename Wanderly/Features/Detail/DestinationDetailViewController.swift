@@ -1,3 +1,4 @@
+import Pendo
 import UIKit
 
 final class DestinationDetailViewController: UIViewController {
@@ -14,10 +15,12 @@ final class DestinationDetailViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.pageTrackId = "Destination Detail"
         title = destination.name
         navigationItem.largeTitleDisplayMode = .never
         view.backgroundColor = Theme.Color.background
         navigationItem.rightBarButtonItem = UIBarButtonItem(systemItem: .action, primaryAction: UIAction { [weak self] _ in self?.showShareOptions() })
+        navigationItem.rightBarButtonItem?.pendoTag = "Open share options"
         setUpViews()
     }
 
@@ -25,6 +28,7 @@ final class DestinationDetailViewController: UIViewController {
         let hero = makeHero()
         let infoCard = makeInfoCard()
         let addButton = PrimaryButton(title: "Add to my trips", symbol: "plus.circle.fill") { [weak self] in self?.confirmAddToTrips() }
+        addButton.pendoTag = "Add destination to trips"
 
         let stack = UIStackView(arrangedSubviews: [hero, infoCard, addButton])
         stack.axis = .vertical
@@ -129,22 +133,36 @@ final class DestinationDetailViewController: UIViewController {
             return
         }
         let alert = UIAlertController(title: "Add \(destination.name)?", message: "We'll save it to your trips so you can plan later.", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
-        alert.addAction(UIAlertAction(title: "Add", style: .default) { [weak self] _ in self?.addToTrips() })
+        alert.pageTrackId = "Add Trip Confirmation"
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+        cancelAction.pendoTag = "Cancel add to trips"
+        alert.addAction(cancelAction)
+        let addAction = UIAlertAction(title: "Add", style: .default) { [weak self] _ in self?.addToTrips() }
+        addAction.pendoTag = "Confirm add to trips"
+        alert.addAction(addAction)
         present(alert, animated: true)
     }
 
     private func addToTrips() {
         tripStore.add(destination)
-        let popup = CardPopupViewController(symbol: "checkmark.seal.fill", headline: "Trip saved!", message: "\(destination.name) is waiting for you in the Trips tab.", buttonTitle: "Awesome", colors: destination.colors)
+        PendoManager.shared().track("Trip saved", properties: nil)
+        let popup = CardPopupViewController(symbol: "checkmark.seal.fill", headline: "Trip saved!", message: "\(destination.name) is waiting for you in the Trips tab.", buttonTitle: "Awesome", colors: destination.colors, buttonPendoTag: "Dismiss trip saved confirmation")
+        popup.pageTrackId = "Trip Saved"
         present(popup, animated: true)
     }
 
     private func showShareOptions() {
         let sheet = UIAlertController(title: destination.name, message: "Share this destination", preferredStyle: .actionSheet)
-        sheet.addAction(UIAlertAction(title: "Copy link", style: .default) { [weak self] _ in self?.copyLink() })
-        sheet.addAction(UIAlertAction(title: "Share…", style: .default) { [weak self] _ in self?.presentShareSheet() })
-        sheet.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        sheet.pageTrackId = "Share Options"
+        let copyAction = UIAlertAction(title: "Copy link", style: .default) { [weak self] _ in self?.copyLink() }
+        copyAction.pendoTag = "Copy destination link"
+        sheet.addAction(copyAction)
+        let shareAction = UIAlertAction(title: "Share…", style: .default) { [weak self] _ in self?.presentShareSheet() }
+        shareAction.pendoTag = "Open system share sheet"
+        sheet.addAction(shareAction)
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+        cancelAction.pendoTag = "Cancel share options"
+        sheet.addAction(cancelAction)
         sheet.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
         present(sheet, animated: true)
     }
@@ -156,6 +174,7 @@ final class DestinationDetailViewController: UIViewController {
 
     private func presentShareSheet() {
         let activity = UIActivityViewController(activityItems: [shareText], applicationActivities: nil)
+        activity.pageTrackId = "System Share Sheet"
         activity.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
         present(activity, animated: true)
     }

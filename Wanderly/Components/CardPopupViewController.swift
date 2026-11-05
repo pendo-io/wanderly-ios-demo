@@ -1,3 +1,4 @@
+import Pendo
 import UIKit
 
 final class CardPopupViewController: UIViewController {
@@ -6,17 +7,19 @@ final class CardPopupViewController: UIViewController {
     private let message: String
     private let buttonTitle: String
     private let colors: [UIColor]
+    private let buttonPendoTag: String?
     private let onDismiss: (() -> Void)?
 
     private let dimmingView = UIView()
     private let cardView = UIView()
 
-    init(symbol: String, headline: String, message: String, buttonTitle: String, colors: [UIColor], onDismiss: (() -> Void)? = nil) {
+    init(symbol: String, headline: String, message: String, buttonTitle: String, colors: [UIColor], buttonPendoTag: String? = nil, onDismiss: (() -> Void)? = nil) {
         self.symbol = symbol
         self.headline = headline
         self.message = message
         self.buttonTitle = buttonTitle
         self.colors = colors
+        self.buttonPendoTag = buttonPendoTag
         self.onDismiss = onDismiss
         super.init(nibName: nil, bundle: nil)
         modalPresentationStyle = .overFullScreen
@@ -72,6 +75,7 @@ final class CardPopupViewController: UIViewController {
         messageLabel.numberOfLines = 0
 
         let button = PrimaryButton(title: buttonTitle) { [weak self] in self?.close() }
+        button.pendoTag = buttonPendoTag
 
         let body = UIStackView(arrangedSubviews: [titleLabel, messageLabel, button])
         body.axis = .vertical

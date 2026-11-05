@@ -1,3 +1,4 @@
+import Pendo
 import UIKit
 
 final class TripsViewController: UITableViewController {
@@ -13,8 +14,10 @@ final class TripsViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.pageTrackId = "Trips"
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "TripCell")
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Clear", primaryAction: UIAction { [weak self] _ in self?.confirmClearAll() })
+        navigationItem.rightBarButtonItem?.pendoTag = "Clear all trips"
         NotificationCenter.default.addObserver(self, selector: #selector(tripsChanged), name: TripStore.didChangeNotification, object: tripStore)
         render()
     }
@@ -32,12 +35,18 @@ final class TripsViewController: UITableViewController {
 
     private func confirmClearAll() {
         let alert = UIAlertController(title: "Clear all trips?", message: "This removes every saved destination.", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
-        alert.addAction(UIAlertAction(title: "Clear", style: .destructive) { [weak self] _ in
+        alert.pageTrackId = "Clear All Confirmation"
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+        cancelAction.pendoTag = "Cancel clear all trips"
+        alert.addAction(cancelAction)
+        let clearAction = UIAlertAction(title: "Clear", style: .destructive) { [weak self] _ in
             guard let self else { return }
             tripStore.removeAll()
             ToastView.show("All trips cleared", symbol: "trash.fill", in: view)
-        })
+            PendoManager.shared().track("All trips cleared", properties: nil)
+        }
+        clearAction.pendoTag = "Confirm clear all trips"
+        alert.addAction(clearAction)
         present(alert, animated: true)
     }
 
@@ -60,9 +69,12 @@ final class TripsViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let delete = UIContextualAction(style: .destructive, title: "Remove") { [weak self] _, _, completion in
-            self?.tripStore.remove(at: indexPath.row)
+            guard let self else { completion(true); return }
+            tripStore.remove(at: indexPath.row)
+            PendoManager.shared().track("Trip removed", properties: nil)
             completion(true)
         }
+        delete.pendoTag = "Remove a trip"
         delete.image = UIImage(systemName: "trash")
         return UISwipeActionsConfiguration(actions: [delete])
     }
